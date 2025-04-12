@@ -5,2034 +5,930 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Market</title>
     <link rel="website icon" type="png" href="/multimedia/image/Binance_Logo (2).png">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/css/Market.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-color: rgb(246,212,52);
+            --white: rgb(234,236,239);
+            --light-color: rgb(132,142,156);
+            --black: rgb(24,26,32);
+            --card-color: rgb(30,35,41);
+        }
+        
+        body {
+            background-color: var(--black);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            color: var(--white);
+        }
+        
+        /* Navigation */
+        .navbar {
+            padding: 0.5rem 1rem;
+        }
+        
+        .logo {
+            height: 40px;
+            width: auto;
+        }
+        
+        .nav-link {
+            color: var(--white) !important;
+            font-size: 15px;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+        
+        .dropdown-menu {
+            background-color: var(--card-color);
+            border: 1px solid var(--light-color);
+        }
+        
+        .dropdown-item {
+            color: var(--white);
+            padding: 0.5rem 1rem;
+        }
+        
+        .dropdown-item:hover {
+            background-color: rgba(246, 212, 52, 0.1);
+        }
+        
+        /* Buttons */
+        .login-btn {
+            padding: 7px 10px;
+            background-color: rgb(43,49,57);
+            border-radius: 5px;
+            color: var(--white);
+            border: none;
+        }
+        
+        .signup-btn {
+            padding: 7px 10px;
+            background-color: var(--primary-color);
+            border-radius: 5px;
+            color: var(--black);
+            border: none;
+        }
+        
+        /* Market Overview Section */
+        .market-overview {
+            padding: 20px 0;
+        }
+        
+        .market-title {
+            font-weight: 600;
+            font-size: 32px;
+            line-height: 40px;
+            color: var(--white);
+        }
+        
+        .market-tab {
+            font-weight: 600;
+            font-size: 24px;
+            line-height: 32px;
+            color: var(--light-color);
+            margin-left: 15px;
+            text-decoration: none;
+        }
+        
+        .market-tab:hover {
+            color: var(--white);
+        }
+        
+        /* Market Cards */
+        .market-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        
+        .market-card {
+            border: 1px solid var(--light-color);
+            border-radius: 16px;
+            padding: 16px 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .market-card:hover {
+            border-color: var(--primary-color);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .card-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--white);
+        }
+        
+        .card-more {
+            font-size: 12px;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .coin-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            transition: background-color 0.2s;
+        }
+        
+        .coin-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .coin-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .coin-icon {
+            width: 24px;
+            height: 24px;
+        }
+        
+        .coin-name {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .coin-price {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .coin-change {
+            font-size: 14px;
+            font-weight: 500;
+            color: #0ecb81; /* Green for positive change */
+        }
+        
+        .coin-change.negative {
+            color: #f6465d; /* Red for negative change */
+        }
+        
+        /* Market Table */
+        .market-table-container {
+            overflow-x: auto;
+            margin-top: 30px;
+        }
+        
+        .market-table {
+            width: 100%;
+            min-width: 800px;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        
+        .market-table th {
+            font-size: 12px;
+            font-weight: 400;
+            color: var(--light-color);
+            padding: 12px 16px;
+            text-align: left;
+            background-color: var(--black);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .market-table td {
+            padding: 16px;
+            font-size: 14px;
+            border-bottom: 1px solid rgba(132, 142, 156, 0.2);
+        }
+        
+        .market-table tr:hover td {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+        
+        .table-coin {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .table-coin-icon {
+            width: 24px;
+            height: 24px;
+        }
+        
+        .table-coin-name {
+            font-weight: 500;
+        }
+        
+        .table-coin-symbol {
+            color: var(--light-color);
+            font-size: 12px;
+        }
+        
+        /* Filters */
+        .market-filters {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            padding: 10px 0;
+            margin-bottom: 20px;
+        }
+        
+        .filter-btn {
+            padding: 8px 12px;
+            border-radius: 6px;
+            background-color: transparent;
+            color: var(--light-color);
+            border: none;
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+        }
+        
+        .filter-btn.active {
+            background-color: var(--primary-color);
+            color: var(--black);
+        }
+        
+        /* Search */
+        .market-search {
+            position: relative;
+            margin-left: auto;
+        }
+        
+        .search-input {
+            background-color: transparent;
+            border: 1px solid transparent;
+            border-radius: 10px;
+            padding: 8px 12px 8px 35px;
+            color: var(--white);
+            width: 200px;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            width: 250px;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--light-color);
+        }
+        
+        /* Footer */
+        footer {
+            padding: 40px 20px;
+            margin-top: 40px;
+            border-top: 1px solid var(--light-color);
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+        
+        .footer-section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .footer-link {
+            color: var(--light-color);
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .footer-link:hover {
+            color: var(--primary-color);
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .social-icon {
+            color: var(--white);
+            font-size: 20px;
+        }
+        
+        .social-icon:hover {
+            color: var(--primary-color);
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 1200px) {
+            .market-cards {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .market-title {
+                font-size: 28px;
+            }
+            
+            .market-tab {
+                font-size: 20px;
+            }
+            
+            .navbar-collapse {
+                background-color: var(--black);
+                padding: 15px;
+                margin-top: 10px;
+                border-radius: 8px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .market-title {
+                font-size: 24px;
+            }
+            
+            .market-tab {
+                font-size: 18px;
+                margin-left: 10px;
+            }
+            
+            .market-cards {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .market-title {
+                font-size: 20px;
+                margin-bottom: 10px;
+            }
+            
+            .market-tab {
+                display: block;
+                margin-left: 0;
+                margin-top: 5px;
+            }
+            
+            .market-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-input {
+                width: 150px;
+            }
+            
+            .search-input:focus {
+                width: 180px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <nav class=".nav" >
-        <nav class="navbar navbar-expand-lg " style="margin-top: -15px; margin-left: 15px;">
-            <div class="container-fluid">
-              <a class="navbar-brand" href="/index.html">
-                <img src="/multimedia/image/binance logo.png" class="logo" alt="">
-              </a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/index.html">
+                <img src="/multimedia/image/binance logo.png" class="logo" alt="Binance Logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav">
-                  <li class="nav-item">
-                    <a class="nav-link active text-light" aria-current="page" href="#" style="font-size: 15px;">Buy Crypto</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link text-light" href="/pages/Market.html" style="font-size: 15px;" >Market</a>
-                  </li>
-                  <li class="nav-item dropdown" style="font-size: 15px;" >
-                    <a class="nav-link dropdown-toggle  text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Trade
-                    </a>
-                    <ul class="dropdown-menu bg-dark" style="font-size: 15px;">
-                      <div class="dropdown-item bg-dark text-light">
-                        <div>
-                            <div style="color: rgb(92,100,113); margin-bottom: 20px;">Basic</div>
-                            <div class="dropdown-item-menu">
-                                <div style="margin-right: 10px;">
-                                    <i class="fa-solid fa-check-to-slot" style="color: #e5ba1f;"></i>
-                                </div>
-                                <a style="text-decoration: none;" href="#">
-                                    <div style="font-size: 14px;font-weight: 500;line-height: 22px; color: white;">Spot</div>
-                                    <p style="width: 245px; text-wrap: wrap; font-size: 12px;font-weight: 400;line-height: 18px;color: rgb(92,100,113);">Buy and sell on the Spot market with advanced tools</p>
-                                </a>
-                            </div>
-                            <div class="dropdown-item-menu">
-                                <div style="margin-right: 10px;">
-                                    <i class="fa-solid fa-check-to-slot" style="color: #e5ba1f;"></i>
-                                </div>
-                                <a style="text-decoration: none;" href="#">
-                                    <div style="font-size: 14px;font-weight: 500;line-height: 22px; color: white;">Margin</div>
-                                    <p style="width: 245px; text-wrap: wrap; font-size: 12px;font-weight: 400;line-height: 18px;color: rgb(92,100,113);">Increase your profits with leverage</p>
-                                </a>
-                            </div>
-                            <div class="dropdown-item-menu">
-                                <div style="margin-right: 10px;">
-                                    <i class="fa-solid fa-check-to-slot" style="color: #e5ba1f;"></i>
-                                </div>
-                                <a style="text-decoration: none;" href="#">
-                                    <div style="font-size: 14px;font-weight: 500;line-height: 22px; color: white;">P2P</div>
-                                    <p style="width: 245px; text-wrap: wrap; font-size: 12px;font-weight: 400;line-height: 18px;color: rgb(92,100,113);">Buy & sell cryptocurrencies using bank transfer and 800+ options</p>
-                                </a>
-                            </div>
-                            <div class="dropdown-item-menu">
-                                <div style="margin-right: 10px;">
-                                    <i class="fa-solid fa-check-to-slot" style="color: #e5ba1f;"></i>
-                                </div>
-                                <a style="text-decoration: none;" href="#">
-                                    <div style="font-size: 14px;font-weight: 500;line-height: 22px; color: white;">Convert and Block Trade</div>
-                                    <p style="width: 245px; text-wrap: wrap; font-size: 12px;font-weight: 400;line-height: 18px;color: rgb(92,100,113);">The easiest way to trade at all sizes</p>
-                                </a>
-                            </div>
-                        </div>
-                        <div>
-                            <div style="color: rgb(92,100,113); margin-bottom: 20px">Advanced</div>
-                            <div class="dropdown-item-menu">
-                                <div style="margin-right: 10px;">
-                                    <i class="fa-brands fa-bots" style="color: #FFD43B;"></i>
-                                </div>
-                                <a style="text-decoration: none;" href="#">
-                                    <div style="font-size: 14px;font-weight: 500;line-height: 22px; color: white;">Trading Bots</div>
-                                    <p style="width: 245px; text-wrap: wrap; font-size: 12px;font-weight: 400;line-height: 18px;color: rgb(92,100,113);">
-                                        Trade smarter with our various automated strategies - easy, fast and reliable</p>
-                                </a>
-                            </div>
-                            <div class="dropdown-item-menu">
-                                <div style="margin-right: 10px;">
-                                    <i class="fa-solid fa-circle-dollar-to-slot" style="color: #FFD43B;"></i>
-                                </div>
-                                <a style="text-decoration: none;" href="#">
-                                    <div style="font-size: 14px;font-weight: 500;line-height: 22px; color: white;">Copy Trading</div>
-                                    <p style="width: 245px; text-wrap: wrap; font-size: 12px;font-weight: 400;line-height: 18px;color: rgb(92,100,113);">
-                                        Follow the most popular traders</p>
-                                </a>
-                            </div>
-                            <div class="dropdown-item-menu">
-                                <div style="margin-right: 10px;">
-                                    <i class="fa-solid fa-circle-dollar-to-slot" style="color: #FFD43B;"></i>
-                                </div>
-                                <a style="text-decoration: none;" href="#">
-                                    <div style="font-size: 14px;font-weight: 500;line-height: 22px; color: white;">APIs</div>
-                                    <p style="width: 245px; text-wrap: wrap; font-size: 12px;font-weight: 400;line-height: 18px;color: rgb(92,100,113);">
-                                        Unlimited opportunities with one key</p>
-                                </a>
-                            </div>
-                        </div>
-                      </div>
-                    </ul>
-                  </li>
-                  <li class="nav-item dropdown" style="font-size: 15px;">
-                    <a class="nav-link dropdown-toggle  text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Features
-                    </a>
-                    <ul class="dropdown-menu bg-dark" style="font-size: 15px;">
-                        <div class="dropdown-item bg-dark text-light">
-                            <div>
-                                
-                                <div class="dropdown-item-menu">
-                                    <div style="margin-right: 10px;">
-                                        <i class="fa-solid fa-circle-dollar-to-slot" style="color: #FFD43B;"></i>
-                                    </div>
-                                    <a style="text-decoration: none;" href="#">
-                                        <div style="font-size: 14px;font-weight: 500;line-height: 22px; color: white;">
-                                            USDⓈ-M Futures
-                                        </div>
-                                        <p style="width: 245px; text-wrap: wrap; font-size: 12px;font-weight: 400;line-height: 18px;color: rgb(92,100,113);">
-                                            Contracts settled in USDT and USDC </p>
-                                    </a>
-                                </div>
-                                <div class="dropdown-item-menu">
-                                    <div style="margin-right: 10px;">
-                                        <i class="fa-solid fa-circle-dollar-to-slot" style="color: #FFD43B;"></i>
-                                    </div>
-                                    <a style="text-decoration: none;" href="#">
-                                        <div style="font-size: 14px;font-weight: 500;line-height: 22px; color: white;">COIN-M Futures</div>
-                                        <p style="width: 245px; text-wrap: wrap; font-size: 12px;font-weight: 400;line-height: 18px;color: rgb(92,100,113);">
-                                            Contracts settled in cryptocurrency
-                                        </p>
-                                    </a>
-                                </div>
-                                <div class="dropdown-item-menu">
-                                    <div style="margin-right: 10px;">
-                                        <i class="fa-solid fa-circle-dollar-to-slot" style="color: #FFD43B;"></i>
-                                    </div>
-                                    <a style="text-decoration: none;" href="#">
-                                        <div style="font-size: 14px;font-weight: 500;line-height: 22px; color: white;">Options</div>
-                                        <p style="width: 245px; text-wrap: wrap; font-size: 12px;font-weight: 400;line-height: 18px;color: rgb(92,100,113);">
-                                            USDT Options with limited downside and affordable entry</p>
-                                    </a>
-                                </div>
-                            </div>
-                    </ul>
-                  </li>
-                  <li class="nav-item dropdown" style="font-size: 15px;">
-                    <a class="nav-link dropdown-toggle  text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Earn
-                    </a>
-                    <ul class="dropdown-menu bg-dark" style="font-size: 15px;">
-                        <div class="dropdown-item bg-dark text-light">
-                            <div>
-                                
-                                <div class="dropdown-item-menu">
-                                    <div style="margin-right: 10px;">
-                                        <i class="fa-solid fa-circle-dollar-to-slot" style="color: #FFD43B;"></i>
-                                    </div>
-                                    <a style="text-decoration: none;" href="#">
-                                        <div style="font-size: 14px;font-weight: 500;line-height: 22px; color: white;">
-                                            Overview
-                                        </div>
-                                        <p style="width: 245px; text-wrap: wrap; font-size: 12px;font-weight: 400;line-height: 18px;color: rgb(92,100,113);">
-                                            One-stop portal for all Earn products </p>
-                                    </a>
-                                </div>
-                                <div class="dropdown-item-menu">
-                                    <div style="margin-right: 10px;">
-                                        <i class="fa-solid fa-circle-dollar-to-slot" style="color: #FFD43B;"></i>
-                                    </div>
-                                    <a style="text-decoration: none;" href="#">
-                                        <div style="font-size: 14px;font-weight: 500;line-height: 22px; color: white;">Simple Earn</div>
-                                        <p style="width: 245px; text-wrap: wrap; font-size: 12px;font-weight: 400;line-height: 18px;color: rgb(92,100,113);">
-                                            Earn passive income on 300+ crypto assets with flexible and locked terms
-                                        </p>
-                                    </a>
-                                </div>
-                                <div class="dropdown-item-menu">
-                                    <div style="margin-right: 10px;">
-                                        <i class="fa-solid fa-circle-dollar-to-slot" style="color: #FFD43B;"></i>
-                                    </div>
-                                    <a style="text-decoration: none;" href="#">
-                                        <div style="font-size: 14px;font-weight: 500;line-height: 22px; color: white;">Advanced Earn</div>
-                                        <p style="width: 245px; text-wrap: wrap; font-size: 12px;font-weight: 400;line-height: 18px;color: rgb(92,100,113);">
-                                            Maximize your returns with our advanced yield investment products</p>
-                                    </a>
-                                </div>
-                                <div class="dropdown-item-menu">
-                                    <div style="margin-right: 10px;">
-                                        <i class="fa-solid fa-circle-dollar-to-slot" style="color: #FFD43B;"></i>
-                                    </div>
-                                    <a style="text-decoration: none;" href="#">
-                                        <div style="font-size: 14px;font-weight: 500;line-height: 22px; color: white;">Loans</div>
-                                        <p style="width: 245px; text-wrap: wrap; font-size: 12px;font-weight: 400;line-height: 18px;color: rgb(92,100,113);">
-                                            Access quick and easy loans with competitive rates</p>
-                                    </a>
-                                </div>
-                            </div>
-                    </ul>
-                  </li>
-                  <li class="nav-item dropdown" style="font-size: 15px;">
-                    <a class="nav-link dropdown-toggle  text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Square
-                    </a>
-                    <ul class="dropdown-menu bg-dark" style="font-size: 15px;">
-                        <div class="dropdown-item bg-dark text-light">
-                            <div>
-                                
-                                <div class="dropdown-item-menu">
-                                    <div style="margin-right: 10px;">
-                                        <i class="fa-solid fa-circle-dollar-to-slot" style="color: #FFD43B;"></i>
-                                    </div>                                    <a style="text-decoration: none;" href="#">
-                                        <div style="font-size: 14px;font-weight: 500;line-height: 22px; color: white;">Square</div>
-                                        <p style="width: 245px; text-wrap: wrap; font-size: 12px;font-weight: 400;line-height: 18px;color: rgb(92,100,113);">
-                                            Stay informed with everything crypto</p>
-                                    </a>
-                                </div>
-                                <div class="dropdown-item-menu">
-                                    <div style="margin-right: 10px;">
-                                        <i class="fa-solid fa-circle-dollar-to-slot" style="color: #FFD43B;"></i>
-                                    </div>                                    <a style="text-decoration: none;" href="#">
-                                        <div style="font-size: 14px;font-weight: 500;line-height: 22px; color: white;">Academy (Learn & Earn)</div>
-                                        <p style="width: 245px; text-wrap: wrap; font-size: 12px;font-weight: 400;line-height: 18px;color: rgb(92,100,113);">
-                                            Earn crypto by learning about blockchain</p>
-                                    </a>
-                                </div>
-                                <div class="dropdown-item-menu">
-                                    <div style="margin-right: 10px;">
-                                        <i class="fa-solid fa-circle-dollar-to-slot" style="color: #FFD43B;"></i>
-                                    </div>                                    
-                                    <a style="text-decoration: none;" href="#">
-                                        <div style="font-size: 14px;font-weight: 500;line-height: 22px; color: white;">Blog</div>
-                                        <p style="width: 245px; text-wrap: wrap; font-size: 12px;font-weight: 400;line-height: 18px;color: rgb(92,100,113);">
-                                            Expand your knowledge and get the latest insights</p>
-                                    </a>
-                                </div>
-                                <div class="dropdown-item-menu">
-                                    <div style="margin-right: 10px;">
-                                        <i class="fa-solid fa-circle-dollar-to-slot" style="color: #FFD43B;"></i>
-                                    </div>                                    <a style="text-decoration: none;" href="#">
-                                        <div style="font-size: 14px;font-weight: 500;line-height: 22px; color: white;">Research</div>
-                                        <p style="width: 245px; text-wrap: wrap; font-size: 12px;font-weight: 400;line-height: 18px;color: rgb(92,100,113);">
-                                            Institutional-grade analysis, in-depth insights, and more</p>
-                                    </a>
-                                </div>
-                            </div>
-                    </ul>
-                  </li>
-                  <li class="nav-item dropdown" style="font-size: 15px;">
-                    <a class="nav-link dropdown-toggle  text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      More
-                    </a>
-                    <ul class="dropdown-menu bg-dark" style="font-size: 15px;">
-                        <div class="dropdown-item bg-dark text-light">
-                          <div>
-                              
-                              <div class="dropdown-item-menu">
-                                <div style="margin-right: 10px;">
-                                    <i class="fa-solid fa-circle-dollar-to-slot" style="color: #FFD43B;"></i>
-                                </div>                                  <a style="text-decoration: none;" href="#">
-                                      <div style="font-size: 14px;font-weight: 500;line-height: 22px; color: white;">VIP & Institutional</div>
-                                      <p style="width: 245px; text-wrap: wrap; font-size: 12px;font-weight: 400;line-height: 18px;color: rgb(92,100,113);">
-                                        Your trusted digital asset platform for VIPs and institutions</p>
-                                  </a>
-                              </div>
-                              <div class="dropdown-item-menu">
-                                <div style="margin-right: 10px;">
-                                    <i class="fa-solid fa-circle-dollar-to-slot" style="color: #FFD43B;"></i>
-                                </div>                                  <a style="text-decoration: none;" href="#">
-                                      <div style="font-size: 14px;font-weight: 500;line-height: 22px; color: white;">Launchpool</div>
-                                      <p style="width: 245px; text-wrap: wrap; font-size: 12px;font-weight: 400;line-height: 18px;color: rgb(92,100,113);">
-                                        Discover and gain access to new token launches</p>
-                                  </a>
-                              </div>
-                              <div class="dropdown-item-menu">
-                                <div style="margin-right: 10px;">
-                                    <i class="fa-solid fa-circle-dollar-to-slot" style="color: #FFD43B;"></i>
-                                </div>                                  <a style="text-decoration: none;" href="#">
-                                      <div style="font-size: 14px;font-weight: 500;line-height: 22px; color: white;">Megadrop</div>
-                                      <p style="width: 245px; text-wrap: wrap; font-size: 12px;font-weight: 400;line-height: 18px;color: rgb(92,100,113);">
-                                        Lock your BNB and complete Web3 quests for boosted airdrop rewards</p>
-                                  </a>
-                              </div>
-                              <div class="dropdown-item-menu">
-                                <div style="margin-right: 10px;">
-                                    <i class="fa-solid fa-circle-dollar-to-slot" style="color: #FFD43B;"></i>
-                                </div>                                  <a style="text-decoration: none;" href="#">
-                                      <div style="font-size: 14px;font-weight: 500;line-height: 22px; color: white;">Mining Pool</div>
-                                      <p style="width: 245px; text-wrap: wrap; font-size: 12px;font-weight: 400;line-height: 18px;color: rgb(92,100,113);">
-                                        Mine more rewards by connecting to the pool</p>
-                                  </a>
-                              </div>
-                              <div class="dropdown-item-menu">
-                                <div style="margin-right: 10px;">
-                                    <i class="fa-solid fa-circle-dollar-to-slot" style="color: #FFD43B;"></i>
-                                </div>                                  <a style="text-decoration: none;" href="#">
-                                      <div style="font-size: 14px;font-weight: 500;line-height: 22px; color: white;">Pay</div>
-                                      <p style="width: 245px; text-wrap: wrap; font-size: 12px;font-weight: 400;line-height: 18px;color: rgb(92,100,113);">
-                                        Send, receive and spend crypto</p>
-                                  </a>
-                              </div>
-                          </div>
-                          <div>
-                              
-                              
-                              <div class="dropdown-item-menu">
-                                <div style="margin-right: 10px;">
-                                    <i class="fa-solid fa-circle-dollar-to-slot" style="color: #FFD43B;"></i>
-                                </div>                                  <a style="text-decoration: none;" href="#">
-                                      <div style="font-size: 14px;font-weight: 500;line-height: 22px; color: white;">NFT</div>
-                                      <p style="width: 245px; text-wrap: wrap; font-size: 12px;font-weight: 400;line-height: 18px;color: rgb(92,100,113);">
-                                        Explore NFTs from creators worldwide</p>
-                                  </a>
-                              </div>
-                              <div class="dropdown-item-menu">
-                                <div style="margin-right: 10px;">
-                                    <i class="fa-solid fa-circle-dollar-to-slot" style="color: #FFD43B;"></i>
-                                </div>                                  <a style="text-decoration: none;" href="#">
-                                      <div style="font-size: 14px;font-weight: 500;line-height: 22px; color: white;">Fan Token</div>
-                                      <p style="width: 245px; text-wrap: wrap; font-size: 12px;font-weight: 400;line-height: 18px;color: rgb(92,100,113);">
-                                        Discover an all-new fandom and unlock unlimited fan experiences</p>
-                                  </a>
-                              </div>
-                              <div class="dropdown-item-menu">
-                                <div style="margin-right: 10px;">
-                                    <i class="fa-solid fa-circle-dollar-to-slot" style="color: #FFD43B;"></i>
-                                </div>                                  <a style="text-decoration: none;" href="#">
-                                      <div style="font-size: 14px;font-weight: 500;line-height: 22px; color: white;">Binance Wallet</div>
-                                      <p style="width: 245px; text-wrap: wrap; font-size: 12px;font-weight: 400;line-height: 18px;color: rgb(92,100,113);">
-                                        Meet the next-generation Web3 wallet</p>
-                                  </a>
-                              </div>
-                              <div class="dropdown-item-menu">
-                                <div style="margin-right: 10px;">
-                                    <i class="fa-solid fa-circle-dollar-to-slot" style="color: #FFD43B;"></i>
-                                </div>                                  <a style="text-decoration: none;" href="#">
-                                      <div style="font-size: 14px;font-weight: 500;line-height: 22px; color: white;">BNB Chain</div>
-                                      <p style="width: 245px; text-wrap: wrap; font-size: 12px;font-weight: 400;line-height: 18px;color: rgb(92,100,113);">
-                                        The most popular blockchain to build your own dApp</p>
-                                  </a>
-                              </div>
-                              <div class="dropdown-item-menu">
-                                <div style="margin-right: 10px;">
-                                    <i class="fa-solid fa-circle-dollar-to-slot" style="color: #FFD43B;"></i>
-                                </div>                                  <a style="text-decoration: none;" href="#">
-                                      <div style="font-size: 14px;font-weight: 500;line-height: 22px; color: white;"> Charity</div>
-                                      <p style="width: 245px; text-wrap: wrap; font-size: 12px;font-weight: 400;line-height: 18px;color: rgb(92,100,113);">
-                                        Blockchain empowers charity to be more transparent, efficient, and traceable</p>
-                                  </a>
-                              </div>
-                          </div>
-                        </div>
-                      </ul>
-                  </li>
-                </ul>
-              </div>
-              <div>
-                <a href=""><i class="fa-solid fa-magnifying-glass"></i></a>
-                <a href="/pages/Log-in.html" class="login"><button>Log In</button></a>
-                <a href="/pages/Sign-up.html" class="Sign-up"><button style="color: black;">Sign Up</button></a>
-                <a href="#"><img src="./multimedia/image/app-download.png" class="icon-img" alt=""></a>
-                <a href="#"><img src="./multimedia/image/globe.png" class="icon-img-2" alt=""></a>
-                <a href="#"><img src="./multimedia/image/moon.png" class="icon-img-2" alt=""></a>
-              </div>
-            </div>
-          </nav>
-    </nav>
-        <section class="sec-1">
-        <div class="parent-1">
-            <div style="display: inline-block; text-wrap: nowrap;">
-                <a class="m-o" href="">Markets Overview</a>
-                <a class="m-o-2" href="">Trading Data</a>
-                <a class="m-o-2" href="">Opportunity</a>
-                <a class="m-o-2" href="">Token Unlock</a>
-            </div>
-            <div class="child-2">
-                <div class="sec-1-card">
-                    <a href="" class="sec-1-text-con">
-                        <div class="sec-1-text">Hot Coins</div>
-                        <div class="sec-1-text">More></div>
-                    </a>
-                    <div>
-                        <a href="" class="sec-1-text-con-2">
-                            <div class="sec-1-con-1">
-                                <img class="icon-sec-1" src="/multimedia/image/bnb.png" alt="">
-                                <div class="icon-sec-1-text">BNB</div>
-                            </div>
-                            <div class="sec-1-con-2">$691.39</div>
-                            <div class="sec-1-con-3">+6.35%</div>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Buy Crypto</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/pages/Market.html">Market</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Trade
                         </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Spot</a></li>
+                            <li><a class="dropdown-item" href="#">Margin</a></li>
+                            <li><a class="dropdown-item" href="#">P2P</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Features
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Futures</a></li>
+                            <li><a class="dropdown-item" href="#">Options</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <a href="#" class="text-white me-3"><i class="fas fa-search"></i></a>
+                    <a href="/pages/Log-in.html" class="login-btn me-2">Log In</a>
+                    <a href="/pages/Sign-up.html" class="signup-btn">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Market Overview Section -->
+    <section class="market-overview container">
+        <div class="d-flex flex-wrap align-items-center mb-4">
+            <h1 class="market-title">Markets Overview</h1>
+            <a href="#" class="market-tab">Trading Data</a>
+            <a href="#" class="market-tab">Opportunity</a>
+            <a href="#" class="market-tab">Token Unlock</a>
+        </div>
+        
+        <div class="market-cards">
+            <!-- Hot Coins Card -->
+            <div class="market-card">
+                <div class="card-header">
+                    <h3 class="card-title">Hot Coins</h3>
+                    <a href="#" class="card-more">More &gt;</a>
+                </div>
+                <div class="card-body">
+                    <div class="coin-item">
+                        <div class="coin-info">
+                            <img src="/multimedia/image/bnb.png" alt="BNB" class="coin-icon">
+                            <span class="coin-name">BNB</span>
+                        </div>
+                        <div class="coin-price">$691.39</div>
+                        <div class="coin-change">+6.35%</div>
                     </div>
-                    <a href="" class="sec-1-text-con-2">
-                        <div class="sec-1-con-1">
-                            <img class="icon-sec-1" src="/multimedia/image/btc.png" alt="">
-                            <div class="icon-sec-1-text">BTC</div>
+                    <div class="coin-item">
+                        <div class="coin-info">
+                            <img src="/multimedia/image/btc.png" alt="BTC" class="coin-icon">
+                            <span class="coin-name">BTC</span>
                         </div>
-                        <div class="sec-1-con-2">$94.06</div>
-                        <div class="sec-1-con-3">-1.37%</div>
-                    </a>
-                    <a href="" class="sec-1-text-con-2">
-                        <div class="sec-1-con-1">
-                            <img class="icon-sec-1" src="/multimedia/image/etherium.png" alt="">
-                            <div class="icon-sec-1-text">ETH</div>
+                        <div class="coin-price">$94.06</div>
+                        <div class="coin-change negative">-1.37%</div>
+                    </div>
+                    <div class="coin-item">
+                        <div class="coin-info">
+                            <img src="/multimedia/image/etherium.png" alt="ETH" class="coin-icon">
+                            <span class="coin-name">ETH</span>
                         </div>
-                        <div class="sec-1-con-2">$691.39</div>
-                        <div class="sec-1-con-3">+6.35%</div>
-                    </a>
-                </div>
-                <div class="sec-1-card">
-                    <a href="" class="sec-1-text-con">
-                        <div class="sec-1-text">New Listing</div>
-                        <div class="sec-1-text">More></div>
-                    </a>
-                    <a href="" class="sec-1-text-con-2">
-                        <div class="sec-1-con-1">
-                            <img class="icon-sec-1" src="/multimedia/image/bnb.png" alt="">
-                            <div class="icon-sec-1-text">BNB</div>
-                        </div>
-                        <div class="sec-1-con-2">$691.39</div>
-                        <div class="sec-1-con-3">+6.35%</div>
-                    </a>
-                    <a href="" class="sec-1-text-con-2">
-                        <div class="sec-1-con-1">
-                            <img class="icon-sec-1" src="/multimedia/image/btc.png" alt="">
-                            <div class="icon-sec-1-text">BTC</div>
-                        </div>
-                        <div class="sec-1-con-2">$94.06</div>
-                        <div class="sec-1-con-3">-1.37%</div>
-                    </a>
-                    <a href="" class="sec-1-text-con-2">
-                        <div class="sec-1-con-1">
-                            <img class="icon-sec-1" src="/multimedia/image/etherium.png" alt="">
-                            <div class="icon-sec-1-text">ETH</div>
-                        </div>
-                        <div class="sec-1-con-2">$691.39</div>
-                        <div class="sec-1-con-3">+6.35%</div>
-                    </a>
-                </div>
-                <div class="sec-1-card">
-                    <a href="" class="sec-1-text-con">
-                        <div class="sec-1-text">Top Gainer Coin</div>
-                        <div class="sec-1-text">More></div>
-                    </a>
-                    <a href="" class="sec-1-text-con-2">
-                        <div class="sec-1-con-1">
-                            <img class="icon-sec-1" src="/multimedia/image/bnb.png" alt="">
-                            <div class="icon-sec-1-text">BNB</div>
-                        </div>
-                        <div class="sec-1-con-2">$691.39</div>
-                        <div class="sec-1-con-3">+6.35%</div>
-                    </a>
-                    <a href="" class="sec-1-text-con-2">
-                        <div class="sec-1-con-1">
-                            <img class="icon-sec-1" src="/multimedia/image/btc.png" alt="">
-                            <div class="icon-sec-1-text">BTC</div>
-                        </div>
-                        <div class="sec-1-con-2">$94.06</div>
-                        <div class="sec-1-con-3">-1.37%</div>
-                    </a>
-                    <a href="" class="sec-1-text-con-2">
-                        <div class="sec-1-con-1">
-                            <img class="icon-sec-1" src="/multimedia/image/etherium.png" alt="">
-                            <div class="icon-sec-1-text">ETH</div>
-                        </div>
-                        <div class="sec-1-con-2">$691.39</div>
-                        <div class="sec-1-con-3">+6.35%</div>
-                    </a>
-                </div>
-                <div  id="act" class="sec-1-card">
-                    <a href="" class="sec-1-text-con">
-                        <div class="sec-1-text">Top Volume coin</div>
-                        <div class="sec-1-text">More></div>
-                    </a>
-                    <a href="" class="sec-1-text-con-2">
-                        <div class="sec-1-con-1">
-                            <img class="icon-sec-1" src="/multimedia/image/bnb.png" alt="">
-                            <div class="icon-sec-1-text">BNB</div>
-                        </div>
-                        <div class="sec-1-con-2">$691.39</div>
-                        <div class="sec-1-con-3">+6.35%</div>
-                    </a>
-                    <a href="" class="sec-1-text-con-2">
-                        <div class="sec-1-con-1">
-                            <img class="icon-sec-1" src="/multimedia/image/btc.png" alt="">
-                            <div class="icon-sec-1-text">BTC</div>
-                        </div>
-                        <div class="sec-1-con-2">$94.06</div>
-                        <div class="sec-1-con-3">-1.37%</div>
-                    </a>
-                    <a href="" class="sec-1-text-con-2">
-                        <div class="sec-1-con-1">
-                            <img class="icon-sec-1" src="/multimedia/image/etherium.png" alt="">
-                            <div class="icon-sec-1-text">ETH</div>
-                        </div>
-                        <div class="sec-1-con-2">$691.39</div>
-                        <div class="sec-1-con-3">+6.35%</div>
-                    </a>
+                        <div class="coin-price">$691.39</div>
+                        <div class="coin-change">+6.35%</div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
-    <section class="sec-2">
-        <div class="parent-2">
-            <div class="sec-2-child-1">
-                <div class="sec-2-child-1-menu">
-                    <a href="" class="sec-2-con-1">Favourite</a>
-                    <a href="" class="sec-2-con-1" style="color: var(--white);">All Crypto's</a>
-                    <a href="" class="sec-2-con-1">Spot/ Margin Market</a>
-                    <a href="" class="sec-2-con-1">New Listing</a>
-                    <a href="" class="sec-2-con-1">Zones</a> 
-                </div>
-                <div class="search-btn">
-                    <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
-                    <input type="text" placeholder="Search Coin Name" class="input">
-                </div>
-            </div>
-            <div class="sec-2-child-2">
-                <div class="sec-2-child-2-menu">
-                    <a href="" class="sec-2-con-2" style="background-color: blue; color: white;" ><p class="t-1">All</p></a>
-                    <a href="" class="sec-2-con-2"> <p class="t-1">Solana</p></a>
-                    <a href="" class="sec-2-con-2"> <p class="t-1">RWA</p></a>
-                    <a href="" class="sec-2-con-2"> <p class="t-1">Meme</p></a>
-                    <a href="" class="sec-2-con-2"> <p class="t-1">Payment</p></a>
-                    <a href="" class="sec-2-con-2"> <p class="t-1">Ai</p></a>
-                    <a href="" class="sec-2-con-2"> <p class="t-1">Layer 1 / Layer 2</p></a>
-                    <a href="" class="sec-2-con-2"> <p class="t-1">Metaverse</p></a>
-                    <a href="" class="sec-2-con-2"> <p class="t-1">Others</p></a>
-                </div>
-            </div>
-            <div class="sec-2-child-3">
-                <div class="sec-2-child-3-menu">
-                    <div class="sec-2-con-3-1">Top Tokens by Market Capitalization</div>
-                    <div class="sec-2-con-3-2">
-                        Get a comprehensive snapshot of all cryptocurrencies available on Binance. This page displays the latest prices, 24-hour trading volume, price changes, and market capitalizations for all..</div>
-                    <div class="sec-2-con-3-3">Show More</div>
-                </div>
-            </div>
-            <div class="sec-2-child-4">
-                <div class="sec-2-child-4-menu-1">
-                    <a href="" class="sec-2-child-4-menu-child-1">
-                        <div class="sec-2-con-4-1">
-                            <div>Name</div>
-                            <img data-ot-ignore="" alt="unsorted" height="16" width="16" src="/multimedia/image/sort-small-f.svg">
-                        </div>
-                    </a>    
-                    <a href="" class="sec-2-child-4-menu-child-2">
-                        <div class="sec-2-con-4-2">
-                            <div>Price</div>
-                            <img data-ot-ignore="" alt="unsorted" height="16" width="16" src="/multimedia/image/sort-small-f.svg">
-                        </div>
-                    </a>
-                    <a href="" class="sec-2-child-4-menu-child-3">
-                        <div class="sec-2-con-4-3">
-                            <div style="
-                            box-sizing: border-box;
-                            margin: 0;
-                            min-width: 0;
-                            position: relative;
-                            outline: none;
-                            margin-right: 8px;
-                            width: 57px;">
-                                <div id="spec-1">
-                                    24
-                                </div>
-                            </div>
-                            <div>Change</div>
-                            <img data-ot-ignore="" alt="unsorted" height="16" width="16" src="/multimedia/image/sort-small-f.svg">
-                        </div>
-                    </a>
-                    <a href="" class="sec-2-child-4-menu-child-2">
-                        <div class="sec-2-con-4-2">
-                            <div style="text-wrap: nowrap;">24h volume</div>
-                            <img data-ot-ignore="" alt="unsorted" height="16" width="16" src="/multimedia/image/sort-small-f.svg">
-                        </div>
-                    </a>
-                    <a href="" class="sec-2-child-4-menu-child-2">
-                        <div class="sec-2-con-4-2">
-                            <div id="market-cap" style="text-wrap: nowrap;">Market Cap</div>
-                            <img id="market-cap" data-ot-ignore="" alt="unsorted" height="16" width="16" src="/multimedia/image/sort-small-f.svg">
-                        </div>
-                    </a>
-                    <a href="" class="sec-2-child-4-menu-child-2">
-                        <div class="sec-2-con-4-2">
-                            <div id="action" style="text-wrap: nowrap;">Actions</div>
-                            <!-- <img data-ot-ignore="" alt="unsorted" height="16" width="16" src="/multimedia/image/sort-small-f.svg"> -->
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div>
-                <div class="sec-2-child-4-menu-2">
-                    <a href="">
-                        <div class="sec-2-child-4-menu-2-child-1">
-                            <div class="sec-2-con-4-3-parent">
-                                <div class="sec-2-con-4-3-child">
-                                    <img src="/multimedia/image/btc.png" class="sec-2-con-4-3-child-img" alt="">
-                                </div>
-                                <div class="sec-2-con-4-3-child-2">
-                                    <div class="sec-2-con-4-3-child-2-1">BTC</div>
-                                    <div class="sec-2-con-4-3-child-2-2">Bitcoin</div>
-                                </div>
-                            </div>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-2">
-                                    $
-                                    93,895.01
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-3">
-                                    0.95%
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-4">
-                                    38.44B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-5">
-                                    1.871.57B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-6">
-                                    <i class="fa-brands fa-researchgate"></i>
-                                    <i class="fa-solid fa-magnifying-glass-minus"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </a>
-                    
-                </div>
-                <div class="sec-2-child-4-menu-2">
-                    <a href="">
-                        <div class="sec-2-child-4-menu-2-child-1">
-                            <div class="sec-2-con-4-3-parent">
-                                <div class="sec-2-con-4-3-child">
-                                    <img src="/multimedia/image/btc.png" class="sec-2-con-4-3-child-img" alt="">
-                                </div>
-                                <div class="sec-2-con-4-3-child-2">
-                                    <div class="sec-2-con-4-3-child-2-1">BTC</div>
-                                    <div class="sec-2-con-4-3-child-2-2">Bitcoin</div>
-                                </div>
-                            </div>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-2">
-                                    $
-                                    93,895.01
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-3">
-                                    0.95%
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-4">
-                                    38.44B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-5">
-                                    1.871.57B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-6">
-                                    <i class="fa-brands fa-researchgate"></i>
-                                    <i class="fa-solid fa-magnifying-glass-minus"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </a>
-                    
-                </div>
-                <div class="sec-2-child-4-menu-2">
-                    <a href="">
-                        <div class="sec-2-child-4-menu-2-child-1">
-                            <div class="sec-2-con-4-3-parent">
-                                <div class="sec-2-con-4-3-child">
-                                    <img src="/multimedia/image/btc.png" class="sec-2-con-4-3-child-img" alt="">
-                                </div>
-                                <div class="sec-2-con-4-3-child-2">
-                                    <div class="sec-2-con-4-3-child-2-1">BTC</div>
-                                    <div class="sec-2-con-4-3-child-2-2">Bitcoin</div>
-                                </div>
-                            </div>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-2">
-                                    $
-                                    93,895.01
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-3">
-                                    0.95%
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-4">
-                                    38.44B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-5">
-                                    1.871.57B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-6">
-                                    <i class="fa-brands fa-researchgate"></i>
-                                    <i class="fa-solid fa-magnifying-glass-minus"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </a>
-                    
-                </div>
-                <div class="sec-2-child-4-menu-2">
-                    <a href="">
-                        <div class="sec-2-child-4-menu-2-child-1">
-                            <div class="sec-2-con-4-3-parent">
-                                <div class="sec-2-con-4-3-child">
-                                    <img src="/multimedia/image/btc.png" class="sec-2-con-4-3-child-img" alt="">
-                                </div>
-                                <div class="sec-2-con-4-3-child-2">
-                                    <div class="sec-2-con-4-3-child-2-1">BTC</div>
-                                    <div class="sec-2-con-4-3-child-2-2">Bitcoin</div>
-                                </div>
-                            </div>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-2">
-                                    $
-                                    93,895.01
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-3">
-                                    0.95%
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-4">
-                                    38.44B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-5">
-                                    1.871.57B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-6">
-                                    <i class="fa-brands fa-researchgate"></i>
-                                    <i class="fa-solid fa-magnifying-glass-minus"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </a>
-                    
-                </div>
-                <div class="sec-2-child-4-menu-2">
-                    <a href="">
-                        <div class="sec-2-child-4-menu-2-child-1">
-                            <div class="sec-2-con-4-3-parent">
-                                <div class="sec-2-con-4-3-child">
-                                    <img src="/multimedia/image/btc.png" class="sec-2-con-4-3-child-img" alt="">
-                                </div>
-                                <div class="sec-2-con-4-3-child-2">
-                                    <div class="sec-2-con-4-3-child-2-1">BTC</div>
-                                    <div class="sec-2-con-4-3-child-2-2">Bitcoin</div>
-                                </div>
-                            </div>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-2">
-                                    $
-                                    93,895.01
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-3">
-                                    0.95%
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-4">
-                                    38.44B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-5">
-                                    1.871.57B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-6">
-                                    <i class="fa-brands fa-researchgate"></i>
-                                    <i class="fa-solid fa-magnifying-glass-minus"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </a>
-                    
-                </div>
-                <div class="sec-2-child-4-menu-2">
-                    <a href="">
-                        <div class="sec-2-child-4-menu-2-child-1">
-                            <div class="sec-2-con-4-3-parent">
-                                <div class="sec-2-con-4-3-child">
-                                    <img src="/multimedia/image/btc.png" class="sec-2-con-4-3-child-img" alt="">
-                                </div>
-                                <div class="sec-2-con-4-3-child-2">
-                                    <div class="sec-2-con-4-3-child-2-1">BTC</div>
-                                    <div class="sec-2-con-4-3-child-2-2">Bitcoin</div>
-                                </div>
-                            </div>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-2">
-                                    $
-                                    93,895.01
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-3">
-                                    0.95%
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-4">
-                                    38.44B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-5">
-                                    1.871.57B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-6">
-                                    <i class="fa-brands fa-researchgate"></i>
-                                    <i class="fa-solid fa-magnifying-glass-minus"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </a>
-                    
-                </div>
-                <div class="sec-2-child-4-menu-2">
-                    <a href="">
-                        <div class="sec-2-child-4-menu-2-child-1">
-                            <div class="sec-2-con-4-3-parent">
-                                <div class="sec-2-con-4-3-child">
-                                    <img src="/multimedia/image/btc.png" class="sec-2-con-4-3-child-img" alt="">
-                                </div>
-                                <div class="sec-2-con-4-3-child-2">
-                                    <div class="sec-2-con-4-3-child-2-1">BTC</div>
-                                    <div class="sec-2-con-4-3-child-2-2">Bitcoin</div>
-                                </div>
-                            </div>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-2">
-                                    $
-                                    93,895.01
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-3">
-                                    0.95%
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-4">
-                                    38.44B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-5">
-                                    1.871.57B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-6">
-                                    <i class="fa-brands fa-researchgate"></i>
-                                    <i class="fa-solid fa-magnifying-glass-minus"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </a>
-                    
-                </div>
-                <div class="sec-2-child-4-menu-2">
-                    <a href="">
-                        <div class="sec-2-child-4-menu-2-child-1">
-                            <div class="sec-2-con-4-3-parent">
-                                <div class="sec-2-con-4-3-child">
-                                    <img src="/multimedia/image/btc.png" class="sec-2-con-4-3-child-img" alt="">
-                                </div>
-                                <div class="sec-2-con-4-3-child-2">
-                                    <div class="sec-2-con-4-3-child-2-1">BTC</div>
-                                    <div class="sec-2-con-4-3-child-2-2">Bitcoin</div>
-                                </div>
-                            </div>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-2">
-                                    $
-                                    93,895.01
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-3">
-                                    0.95%
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-4">
-                                    38.44B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-5">
-                                    1.871.57B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-6">
-                                    <i class="fa-brands fa-researchgate"></i>
-                                    <i class="fa-solid fa-magnifying-glass-minus"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </a>
-                    
-                </div>
-                <div class="sec-2-child-4-menu-2">
-                    <a href="">
-                        <div class="sec-2-child-4-menu-2-child-1">
-                            <div class="sec-2-con-4-3-parent">
-                                <div class="sec-2-con-4-3-child">
-                                    <img src="/multimedia/image/btc.png" class="sec-2-con-4-3-child-img" alt="">
-                                </div>
-                                <div class="sec-2-con-4-3-child-2">
-                                    <div class="sec-2-con-4-3-child-2-1">BTC</div>
-                                    <div class="sec-2-con-4-3-child-2-2">Bitcoin</div>
-                                </div>
-                            </div>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-2">
-                                    $
-                                    93,895.01
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-3">
-                                    0.95%
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-4">
-                                    38.44B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-5">
-                                    1.871.57B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-6">
-                                    <i class="fa-brands fa-researchgate"></i>
-                                    <i class="fa-solid fa-magnifying-glass-minus"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </a>
-                    
-                </div>
-                <div class="sec-2-child-4-menu-2">
-                    <a href="">
-                        <div class="sec-2-child-4-menu-2-child-1">
-                            <div class="sec-2-con-4-3-parent">
-                                <div class="sec-2-con-4-3-child">
-                                    <img src="/multimedia/image/btc.png" class="sec-2-con-4-3-child-img" alt="">
-                                </div>
-                                <div class="sec-2-con-4-3-child-2">
-                                    <div class="sec-2-con-4-3-child-2-1">BTC</div>
-                                    <div class="sec-2-con-4-3-child-2-2">Bitcoin</div>
-                                </div>
-                            </div>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-2">
-                                    $
-                                    93,895.01
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-3">
-                                    0.95%
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-4">
-                                    38.44B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-5">
-                                    1.871.57B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-6">
-                                    <i class="fa-brands fa-researchgate"></i>
-                                    <i class="fa-solid fa-magnifying-glass-minus"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </a>
-                    
-                </div>
-                <div class="sec-2-child-4-menu-2">
-                    <a href="">
-                        <div class="sec-2-child-4-menu-2-child-1">
-                            <div class="sec-2-con-4-3-parent">
-                                <div class="sec-2-con-4-3-child">
-                                    <img src="/multimedia/image/btc.png" class="sec-2-con-4-3-child-img" alt="">
-                                </div>
-                                <div class="sec-2-con-4-3-child-2">
-                                    <div class="sec-2-con-4-3-child-2-1">BTC</div>
-                                    <div class="sec-2-con-4-3-child-2-2">Bitcoin</div>
-                                </div>
-                            </div>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-2">
-                                    $
-                                    93,895.01
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-3">
-                                    0.95%
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-4">
-                                    38.44B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-5">
-                                    1.871.57B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-6">
-                                    <i class="fa-brands fa-researchgate"></i>
-                                    <i class="fa-solid fa-magnifying-glass-minus"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </a>
-                    
-                </div>
-                <div class="sec-2-child-4-menu-2">
-                    <a href="">
-                        <div class="sec-2-child-4-menu-2-child-1">
-                            <div class="sec-2-con-4-3-parent">
-                                <div class="sec-2-con-4-3-child">
-                                    <img src="/multimedia/image/btc.png" class="sec-2-con-4-3-child-img" alt="">
-                                </div>
-                                <div class="sec-2-con-4-3-child-2">
-                                    <div class="sec-2-con-4-3-child-2-1">BTC</div>
-                                    <div class="sec-2-con-4-3-child-2-2">Bitcoin</div>
-                                </div>
-                            </div>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-2">
-                                    $
-                                    93,895.01
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-3">
-                                    0.95%
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-4">
-                                    38.44B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-5">
-                                    1.871.57B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-6">
-                                    <i class="fa-brands fa-researchgate"></i>
-                                    <i class="fa-solid fa-magnifying-glass-minus"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </a>
-                    
-                </div>
-                <div class="sec-2-child-4-menu-2">
-                    <a href="">
-                        <div class="sec-2-child-4-menu-2-child-1">
-                            <div class="sec-2-con-4-3-parent">
-                                <div class="sec-2-con-4-3-child">
-                                    <img src="/multimedia/image/btc.png" class="sec-2-con-4-3-child-img" alt="">
-                                </div>
-                                <div class="sec-2-con-4-3-child-2">
-                                    <div class="sec-2-con-4-3-child-2-1">BTC</div>
-                                    <div class="sec-2-con-4-3-child-2-2">Bitcoin</div>
-                                </div>
-                            </div>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-2">
-                                    $
-                                    93,895.01
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-3">
-                                    0.95%
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-4">
-                                    38.44B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-5">
-                                    1.871.57B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-6">
-                                    <i class="fa-brands fa-researchgate"></i>
-                                    <i class="fa-solid fa-magnifying-glass-minus"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </a>
-                    
-                </div>
-                <div class="sec-2-child-4-menu-2">
-                    <a href="">
-                        <div class="sec-2-child-4-menu-2-child-1">
-                            <div class="sec-2-con-4-3-parent">
-                                <div class="sec-2-con-4-3-child">
-                                    <img src="/multimedia/image/btc.png" class="sec-2-con-4-3-child-img" alt="">
-                                </div>
-                                <div class="sec-2-con-4-3-child-2">
-                                    <div class="sec-2-con-4-3-child-2-1">BTC</div>
-                                    <div class="sec-2-con-4-3-child-2-2">Bitcoin</div>
-                                </div>
-                            </div>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-2">
-                                    $
-                                    93,895.01
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-3">
-                                    0.95%
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-4">
-                                    38.44B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-5">
-                                    1.871.57B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-6">
-                                    <i class="fa-brands fa-researchgate"></i>
-                                    <i class="fa-solid fa-magnifying-glass-minus"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </a>
-                    
-                </div>
-                <div class="sec-2-child-4-menu-2">
-                    <a href="">
-                        <div class="sec-2-child-4-menu-2-child-1">
-                            <div class="sec-2-con-4-3-parent">
-                                <div class="sec-2-con-4-3-child">
-                                    <img src="/multimedia/image/btc.png" class="sec-2-con-4-3-child-img" alt="">
-                                </div>
-                                <div class="sec-2-con-4-3-child-2">
-                                    <div class="sec-2-con-4-3-child-2-1">BTC</div>
-                                    <div class="sec-2-con-4-3-child-2-2">Bitcoin</div>
-                                </div>
-                            </div>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-2">
-                                    $
-                                    93,895.01
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-3">
-                                    0.95%
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-4">
-                                    38.44B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-5">
-                                    1.871.57B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-6">
-                                    <i class="fa-brands fa-researchgate"></i>
-                                    <i class="fa-solid fa-magnifying-glass-minus"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </a>
-                    
-                </div>
-                <div class="sec-2-child-4-menu-2">
-                    <a href="">
-                        <div class="sec-2-child-4-menu-2-child-1">
-                            <div class="sec-2-con-4-3-parent">
-                                <div class="sec-2-con-4-3-child">
-                                    <img src="/multimedia/image/btc.png" class="sec-2-con-4-3-child-img" alt="">
-                                </div>
-                                <div class="sec-2-con-4-3-child-2">
-                                    <div class="sec-2-con-4-3-child-2-1">BTC</div>
-                                    <div class="sec-2-con-4-3-child-2-2">Bitcoin</div>
-                                </div>
-                            </div>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-2">
-                                    $
-                                    93,895.01
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-3">
-                                    0.95%
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-4">
-                                    38.44B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-5">
-                                    1.871.57B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-6">
-                                    <i class="fa-brands fa-researchgate"></i>
-                                    <i class="fa-solid fa-magnifying-glass-minus"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </a>
-                    
-                </div>
-                <div class="sec-2-child-4-menu-2">
-                    <a href="">
-                        <div class="sec-2-child-4-menu-2-child-1">
-                            <div class="sec-2-con-4-3-parent">
-                                <div class="sec-2-con-4-3-child">
-                                    <img src="/multimedia/image/btc.png" class="sec-2-con-4-3-child-img" alt="">
-                                </div>
-                                <div class="sec-2-con-4-3-child-2">
-                                    <div class="sec-2-con-4-3-child-2-1">BTC</div>
-                                    <div class="sec-2-con-4-3-child-2-2">Bitcoin</div>
-                                </div>
-                            </div>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-2">
-                                    $
-                                    93,895.01
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-3">
-                                    0.95%
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-4">
-                                    38.44B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-5">
-                                    1.871.57B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-6">
-                                    <i class="fa-brands fa-researchgate"></i>
-                                    <i class="fa-solid fa-magnifying-glass-minus"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </a>
-                    
-                </div>
-                <div class="sec-2-child-4-menu-2">
-                    <a href="">
-                        <div class="sec-2-child-4-menu-2-child-1">
-                            <div class="sec-2-con-4-3-parent">
-                                <div class="sec-2-con-4-3-child">
-                                    <img src="/multimedia/image/btc.png" class="sec-2-con-4-3-child-img" alt="">
-                                </div>
-                                <div class="sec-2-con-4-3-child-2">
-                                    <div class="sec-2-con-4-3-child-2-1">BTC</div>
-                                    <div class="sec-2-con-4-3-child-2-2">Bitcoin</div>
-                                </div>
-                            </div>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-2">
-                                    $
-                                    93,895.01
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-3">
-                                    0.95%
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-4">
-                                    38.44B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-5">
-                                    1.871.57B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-6">
-                                    <i class="fa-brands fa-researchgate"></i>
-                                    <i class="fa-solid fa-magnifying-glass-minus"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </a>
-                    
-                </div>
-                <div class="sec-2-child-4-menu-2">
-                    <a href="">
-                        <div class="sec-2-child-4-menu-2-child-1">
-                            <div class="sec-2-con-4-3-parent">
-                                <div class="sec-2-con-4-3-child">
-                                    <img src="/multimedia/image/btc.png" class="sec-2-con-4-3-child-img" alt="">
-                                </div>
-                                <div class="sec-2-con-4-3-child-2">
-                                    <div class="sec-2-con-4-3-child-2-1">BTC</div>
-                                    <div class="sec-2-con-4-3-child-2-2">Bitcoin</div>
-                                </div>
-                            </div>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-2">
-                                    $
-                                    93,895.01
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-3">
-                                    0.95%
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-4">
-                                    38.44B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-5">
-                                    1.871.57B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-6">
-                                    <i class="fa-brands fa-researchgate"></i>
-                                    <i class="fa-solid fa-magnifying-glass-minus"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </a>
-                    
-                </div>
-                <div class="sec-2-child-4-menu-2">
-                    <a href="">
-                        <div class="sec-2-child-4-menu-2-child-1">
-                            <div class="sec-2-con-4-3-parent">
-                                <div class="sec-2-con-4-3-child">
-                                    <img src="/multimedia/image/btc.png" class="sec-2-con-4-3-child-img" alt="">
-                                </div>
-                                <div class="sec-2-con-4-3-child-2">
-                                    <div class="sec-2-con-4-3-child-2-1">BTC</div>
-                                    <div class="sec-2-con-4-3-child-2-2">Bitcoin</div>
-                                </div>
-                            </div>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-2">
-                                    $
-                                    93,895.01
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-3">
-                                    0.95%
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-4">
-                                    38.44B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-5">
-                                    1.871.57B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-6">
-                                    <i class="fa-brands fa-researchgate"></i>
-                                    <i class="fa-solid fa-magnifying-glass-minus"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </a>
-                    
-                </div>
-                <div class="sec-2-child-4-menu-2">
-                    <a href="">
-                        <div class="sec-2-child-4-menu-2-child-1">
-                            <div class="sec-2-con-4-3-parent">
-                                <div class="sec-2-con-4-3-child">
-                                    <img src="/multimedia/image/btc.png" class="sec-2-con-4-3-child-img" alt="">
-                                </div>
-                                <div class="sec-2-con-4-3-child-2">
-                                    <div class="sec-2-con-4-3-child-2-1">BTC</div>
-                                    <div class="sec-2-con-4-3-child-2-2">Bitcoin</div>
-                                </div>
-                            </div>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-2">
-                                    $
-                                    93,895.01
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-3">
-                                    0.95%
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-4">
-                                    38.44B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-5">
-                                    1.871.57B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-6">
-                                    <i class="fa-brands fa-researchgate"></i>
-                                    <i class="fa-solid fa-magnifying-glass-minus"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </a>
-                    
-                </div>
-                <div class="sec-2-child-4-menu-2">
-                    <a href="">
-                        <div class="sec-2-child-4-menu-2-child-1">
-                            <div class="sec-2-con-4-3-parent">
-                                <div class="sec-2-con-4-3-child">
-                                    <img src="/multimedia/image/btc.png" class="sec-2-con-4-3-child-img" alt="">
-                                </div>
-                                <div class="sec-2-con-4-3-child-2">
-                                    <div class="sec-2-con-4-3-child-2-1">BTC</div>
-                                    <div class="sec-2-con-4-3-child-2-2">Bitcoin</div>
-                                </div>
-                            </div>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-2">
-                                    $
-                                    93,895.01
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-3">
-                                    0.95%
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-4">
-                                    38.44B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-5">
-                                    1.871.57B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-6">
-                                    <i class="fa-brands fa-researchgate"></i>
-                                    <i class="fa-solid fa-magnifying-glass-minus"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </a>
-                    
-                </div>
-                <div class="sec-2-child-4-menu-2">
-                    <a href="">
-                        <div class="sec-2-child-4-menu-2-child-1">
-                            <div class="sec-2-con-4-3-parent">
-                                <div class="sec-2-con-4-3-child">
-                                    <img src="/multimedia/image/btc.png" class="sec-2-con-4-3-child-img" alt="">
-                                </div>
-                                <div class="sec-2-con-4-3-child-2">
-                                    <div class="sec-2-con-4-3-child-2-1">BTC</div>
-                                    <div class="sec-2-con-4-3-child-2-2">Bitcoin</div>
-                                </div>
-                            </div>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-2">
-                                    $
-                                    93,895.01
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-3">
-                                    0.95%
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-4">
-                                    38.44B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-5">
-                                    1.871.57B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-6">
-                                    <i class="fa-brands fa-researchgate"></i>
-                                    <i class="fa-solid fa-magnifying-glass-minus"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </a>
-                    
-                </div>
-                <div class="sec-2-child-4-menu-2">
-                    <a href="">
-                        <div class="sec-2-child-4-menu-2-child-1">
-                            <div class="sec-2-con-4-3-parent">
-                                <div class="sec-2-con-4-3-child">
-                                    <img src="/multimedia/image/btc.png" class="sec-2-con-4-3-child-img" alt="">
-                                </div>
-                                <div class="sec-2-con-4-3-child-2">
-                                    <div class="sec-2-con-4-3-child-2-1">BTC</div>
-                                    <div class="sec-2-con-4-3-child-2-2">Bitcoin</div>
-                                </div>
-                            </div>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-2">
-                                    $
-                                    93,895.01
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-3">
-                                    0.95%
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-4">
-                                    38.44B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-5">
-                                    1.871.57B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-6">
-                                    <i class="fa-brands fa-researchgate"></i>
-                                    <i class="fa-solid fa-magnifying-glass-minus"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </a>
-                    
-                </div>
-                <div class="sec-2-child-4-menu-2">
-                    <a href="">
-                        <div class="sec-2-child-4-menu-2-child-1">
-                            <div class="sec-2-con-4-3-parent">
-                                <div class="sec-2-con-4-3-child">
-                                    <img src="/multimedia/image/btc.png" class="sec-2-con-4-3-child-img" alt="">
-                                </div>
-                                <div class="sec-2-con-4-3-child-2">
-                                    <div class="sec-2-con-4-3-child-2-1">BTC</div>
-                                    <div class="sec-2-con-4-3-child-2-2">Bitcoin</div>
-                                </div>
-                            </div>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-2">
-                                    $
-                                    93,895.01
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-3">
-                                    0.95%
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-4">
-                                    38.44B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-5">
-                                    1.871.57B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-6">
-                                    <i class="fa-brands fa-researchgate"></i>
-                                    <i class="fa-solid fa-magnifying-glass-minus"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </a>
-                    
-                </div>
-                <div class="sec-2-child-4-menu-2">
-                    <a href="">
-                        <div class="sec-2-child-4-menu-2-child-1">
-                            <div class="sec-2-con-4-3-parent">
-                                <div class="sec-2-con-4-3-child">
-                                    <img src="/multimedia/image/btc.png" class="sec-2-con-4-3-child-img" alt="">
-                                </div>
-                                <div class="sec-2-con-4-3-child-2">
-                                    <div class="sec-2-con-4-3-child-2-1">BTC</div>
-                                    <div class="sec-2-con-4-3-child-2-2">Bitcoin</div>
-                                </div>
-                            </div>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-2">
-                                    $
-                                    93,895.01
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-3">
-                                    0.95%
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-4">
-                                    38.44B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-5">
-                                    1.871.57B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-6">
-                                    <i class="fa-brands fa-researchgate"></i>
-                                    <i class="fa-solid fa-magnifying-glass-minus"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </a>
-                    
-                </div>
-                <div class="sec-2-child-4-menu-2">
-                    <a href="">
-                        <div class="sec-2-child-4-menu-2-child-1">
-                            <div class="sec-2-con-4-3-parent">
-                                <div class="sec-2-con-4-3-child">
-                                    <img src="/multimedia/image/btc.png" class="sec-2-con-4-3-child-img" alt="">
-                                </div>
-                                <div class="sec-2-con-4-3-child-2">
-                                    <div class="sec-2-con-4-3-child-2-1">BTC</div>
-                                    <div class="sec-2-con-4-3-child-2-2">Bitcoin</div>
-                                </div>
-                            </div>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-2">
-                                    $
-                                    93,895.01
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-3">
-                                    0.95%
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-4">
-                                    38.44B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-5">
-                                    1.871.57B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-6">
-                                    <i class="fa-brands fa-researchgate"></i>
-                                    <i class="fa-solid fa-magnifying-glass-minus"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </a>
-                    
-                </div>
-                <div class="sec-2-child-4-menu-2">
-                    <a href="">
-                        <div class="sec-2-child-4-menu-2-child-1">
-                            <div class="sec-2-con-4-3-parent">
-                                <div class="sec-2-con-4-3-child">
-                                    <img src="/multimedia/image/btc.png" class="sec-2-con-4-3-child-img" alt="">
-                                </div>
-                                <div class="sec-2-con-4-3-child-2">
-                                    <div class="sec-2-con-4-3-child-2-1">BTC</div>
-                                    <div class="sec-2-con-4-3-child-2-2">Bitcoin</div>
-                                </div>
-                            </div>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-2">
-                                    $
-                                    93,895.01
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-3">
-                                    0.95%
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-4">
-                                    38.44B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-5">
-                                    1.871.57B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-6">
-                                    <i class="fa-brands fa-researchgate"></i>
-                                    <i class="fa-solid fa-magnifying-glass-minus"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </a>
-                    
-                </div>
-                <div class="sec-2-child-4-menu-2">
-                    <a href="">
-                        <div class="sec-2-child-4-menu-2-child-1">
-                            <div class="sec-2-con-4-3-parent">
-                                <div class="sec-2-con-4-3-child">
-                                    <img src="/multimedia/image/btc.png" class="sec-2-con-4-3-child-img" alt="">
-                                </div>
-                                <div class="sec-2-con-4-3-child-2">
-                                    <div class="sec-2-con-4-3-child-2-1">BTC</div>
-                                    <div class="sec-2-con-4-3-child-2-2">Bitcoin</div>
-                                </div>
-                            </div>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-2">
-                                    $
-                                    93,895.01
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-3">
-                                    0.95%
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-4">
-                                    38.44B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-5">
-                                    1.871.57B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-6">
-                                    <i class="fa-brands fa-researchgate"></i>
-                                    <i class="fa-solid fa-magnifying-glass-minus"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </a>
-                    
-                </div>
-                <div class="sec-2-child-4-menu-2">
-                    <a href="">
-                        <div class="sec-2-child-4-menu-2-child-1">
-                            <div class="sec-2-con-4-3-parent">
-                                <div class="sec-2-con-4-3-child">
-                                    <img src="/multimedia/image/btc.png" class="sec-2-con-4-3-child-img" alt="">
-                                </div>
-                                <div class="sec-2-con-4-3-child-2">
-                                    <div class="sec-2-con-4-3-child-2-1">BTC</div>
-                                    <div class="sec-2-con-4-3-child-2-2">Bitcoin</div>
-                                </div>
-                            </div>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-2">
-                                    $
-                                    93,895.01
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-3">
-                                    0.95%
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-4">
-                                    38.44B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-5">
-                                    1.871.57B
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="sec-2-child-4-menu-2-child-6">
-                                    <i class="fa-brands fa-researchgate"></i>
-                                    <i class="fa-solid fa-magnifying-glass-minus"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </a>
-                    
-                </div>
-            </div>
-        </div>
-    </section>
-    
-
-
-    <footer class="footer">
-        <div class="parent-foot">
-            <div class="foot-icon">
-                <h3 class="f-h3" style="font-weight: 600; font-size: 16px; line-height: 24px; margin-bottom: 35px;">Community</h3>
-                <div class="d-n" style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; column-gap: 25px; row-gap: 40px; margin-bottom: 45px ;">
-                    <i class="fa-brands fa-discord fa-xl"></i>
-                    <i class="fa-brands fa-telegram fa-xl"></i>
-                    <i class="fa-brands fa-tiktok fa-xl"></i>
-                    <i class="fa-brands fa-facebook fa-xl"></i>
-                    <i class="fa-brands fa-x-twitter fa-xl"></i>
-                    <i class="fa-brands fa-reddit fa-xl"></i>
-                    <i class="fa-brands fa-instagram fa-xl"></i>
-                    <i class="fa-brands fa-youtube fa-xl"></i>
-                    <i class="fa-brands fa-whatsapp fa-xl"></i>
-                    <i class="fa-solid fa-ellipsis fa-xl"></i>
-                </div>
-                <div>
-                    <i  class="fa-solid fa-globe fa-lg"></i>
-                    <p style="display: inline-block;">English</p>
-                </div>
-                <div>
-                    <i class="fa-solid fa-circle-dollar-to-slot fa-lg"></i>
-                    <p style="display: inline-block;">USD-$</p>
-                </div>
-                <div>
-                    <p style="display: inline-block;">Theme</p>
-                    <i class="fa-solid fa-moon"></i>
-                </div>
-            </div>
-            <div>
-                <h3 class="f-h3" style="font-weight: 600; font-size: 16px; line-height: 24px;margin-bottom: 25px;">About Us</h3>
-                <div class="d-n" style="font-size: .8em; line-height: 1em; font-weight: 590;">
-                    <p><a href="/pages/About.html" id="color">About</a></p>
-                    <p><a href="" id="color">Careers</a></p>
-                    <p><a href="" id="color">Announcements</a></p>
-                    <p><a href="" id="color">News</a></p>
-                    <p><a href="" id="color">Press</a></p>
-                    <p><a href="" id="color">Legal</a></p>
-                    <p><a href="" id="color">Terms</a></p>
-                    <p><a href="" id="color">Privacy</a></p>
-                    <p><a href="" id="color">Building Trust</a></p>
-                    <p><a href="" id="color">Blog</a></p>
-                    <p><a href="" id="color">Community</a></p>
-                    <p><a href="" id="color">Risk Warning</a></p>
-                    <p><a href="" id="color">Notices</a></p>
-                    <p><a href="" id="color">Downloads</a></p>
-                    <p><a href="" id="color">Desktop Application</a></p>
-                </div>
-            </div>
-            <div>
-                <h3 class="f-h3" style="font-weight: 600; font-size: 16px; line-height: 24px;margin-bottom: 25px;">Product</h3>
-                <div class="d-n" style="font-size: .8em; line-height: 1em; font-weight: 590;">
-                    <p><a href="" id="color">Exchange</a></p>
-                    <p><a href="" id="color">Buy Crypto</a></p>
-                    <p><a href="" id="color">Pay</a></p>
-                    <p><a href="" id="color">Academy</a></p>
-                    <p><a href="" id="color">Live</a></p>
-                    <p><a href="" id="color">Tax</a></p>
-                    <p><a href="" id="color">Gift Card</a></p>
-                    <p><a href="" id="color">Launchpool</a></p>
-                    <p><a href="" id="color">Auto-Invest</a></p>
-                    <p><a href="" id="color">ETH Staking</a></p>
-                    <p><a href="" id="color">NFT</a></p>
-                    <p><a href="" id="color">BABT</a></p>
-                    <p><a href="" id="color">Research</a></p>
-                    <p><a href="" id="color">Charity</a></p>
-                </div>
-            </div>
-            <div>
-                <h3 class="f-h3" style="font-weight: 600; font-size: 16px; line-height: 24px;margin-bottom: 25px;">Business</h3>
-                <div class="d-n" style="font-size: .8em; line-height: 1em; font-weight: 590;">
-                    <p><a href="" id="color">P2P Merchant Application</a></p>
-                    <p><a href="" id="color">P2Pro Merchant Application</a></p>
-                    <p><a href="" id="color">Listing Application</a></p>
-                    <p><a href="" id="color">Institutional & VIP Services</a></p>
-                    <p><a href="" id="color">Labs</a></p>
-                    <p><a href="" id="color">Binance Connect</a></p>
-                </div>
-                <h3 class="f-h3" style="font-weight: 600; font-size: 16px; line-height: 24px;margin-bottom: 25px;">Learn</h3>
-                <div class="d-n" style="font-size: .8em; line-height: 1em; font-weight: 590;">
-                    <p><a href="" id="color">Learn & Earn</a></p>
-                    <p><a href="" id="color">Browse Crypto Prices</a></p>
-                    <p><a href="" id="color">Bitcoin Price</a></p>
-                    <p><a href="" id="color">Ethereum Price</a></p>
-                    <p><a href="" id="color">Browse Crypto Price Predictions</a></p>
-                    <p><a href="" id="color">Bitcoin Price Prediction</a></p>
-                    <p><a href="" id="color">Ethereum Price Prediction</a></p>
-                    <p><a href="" id="color">Ethereum Upgrade (Pectra)</a></p>
-                    <p><a href="" id="color">Buy Bitcoin</a></p>
-                    <p><a href="" id="color">Buy BNB</a></p>
-                    <p><a href="" id="color">Buy XRP</a></p>
-                    <p><a href="" id="color">Buy Dogecoin</a></p>
-                    <p><a href="" id="color">Buy Ethereum</a></p>
-                    <p><a href="" id="color">Buy Tradable Altcoins</a></p>
-                </div>
-            </div>
-            <div>
-                <h3 class="f-h3" style="font-weight: 600; font-size: 16px; line-height: 24px;margin-bottom: 25px;">Services</h3>
-                <div class="d-n" style="font-size: .8em; line-height: 1em; font-weight: 590;">
-                    <p><a href="" id="color">Affiliate</a></p>
-                    <p><a href="" id="color">Referral</a></p>
-                    <p><a href="" id="color">OTC Trading</a></p>
-                    <p><a href="" id="color">OTC Trading</a></p>
-                    <p><a href="" id="color">Proof of Reserves</a></p>
-                </div>
-                <h3 class="f-h3" style="font-weight: 600; font-size: 16px; line-height: 24px;margin-bottom: 25px;">Support</h3>
-                <div class="d-n" style="font-size: .8em; line-height: 1em; font-weight: 590;">
-                    <p><a href="" id="color">24/7 Chat Support</a></p>
-                    <p><a href="" id="color">Support Center</a></p>
-                    <p><a href="" id="color">Product Feedback & Suggestions</a></p>
-                    <p><a href="" id="color">Fees</a></p>
-                    <p><a href="" id="color">APIs</a></p>
-                    <p><a href="" id="color">Binance Verify</a></p>
-                    <p><a href="" id="color">Trading Rules</a></p>
-                    <p><a href="" id="color">Binance Airdrop Portal</a></p>
-                    <p><a href="" id="color">Law Enforcement Requests</a></p>
-                </div>
-            </div>
-        </div>
-        <div style="margin-top: 20px; margin-bottom: 20px;text-align: center; width: 75%;">
-        <div style="background-color: var(--light-color); height: 1px; width: 100%;  margin-right: auto; margin-left: auto;  font-size: .8em; margin-bottom: 10px;"></div> 
             
-        <p>Binance© 2024 <a href="" style="margin-left: 10px;" id="color"> Cookie Preferences</a></p>
+            <!-- New Listing Card -->
+            <div class="market-card">
+                <div class="card-header">
+                    <h3 class="card-title">New Listing</h3>
+                    <a href="#" class="card-more">More &gt;</a>
+                </div>
+                <div class="card-body">
+                    <div class="coin-item">
+                        <div class="coin-info">
+                            <img src="/multimedia/image/bnb.png" alt="BNB" class="coin-icon">
+                            <span class="coin-name">BNB</span>
+                        </div>
+                        <div class="coin-price">$691.39</div>
+                        <div class="coin-change">+6.35%</div>
+                    </div>
+                    <div class="coin-item">
+                        <div class="coin-info">
+                            <img src="/multimedia/image/btc.png" alt="BTC" class="coin-icon">
+                            <span class="coin-name">BTC</span>
+                        </div>
+                        <div class="coin-price">$94.06</div>
+                        <div class="coin-change negative">-1.37%</div>
+                    </div>
+                    <div class="coin-item">
+                        <div class="coin-info">
+                            <img src="/multimedia/image/etherium.png" alt="ETH" class="coin-icon">
+                            <span class="coin-name">ETH</span>
+                        </div>
+                        <div class="coin-price">$691.39</div>
+                        <div class="coin-change">+6.35%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Top Gainer Card -->
+            <div class="market-card">
+                <div class="card-header">
+                    <h3 class="card-title">Top Gainer Coin</h3>
+                    <a href="#" class="card-more">More &gt;</a>
+                </div>
+                <div class="card-body">
+                    <div class="coin-item">
+                        <div class="coin-info">
+                            <img src="/multimedia/image/bnb.png" alt="BNB" class="coin-icon">
+                            <span class="coin-name">BNB</span>
+                        </div>
+                        <div class="coin-price">$691.39</div>
+                        <div class="coin-change">+6.35%</div>
+                    </div>
+                    <div class="coin-item">
+                        <div class="coin-info">
+                            <img src="/multimedia/image/btc.png" alt="BTC" class="coin-icon">
+                            <span class="coin-name">BTC</span>
+                        </div>
+                        <div class="coin-price">$94.06</div>
+                        <div class="coin-change negative">-1.37%</div>
+                    </div>
+                    <div class="coin-item">
+                        <div class="coin-info">
+                            <img src="/multimedia/image/etherium.png" alt="ETH" class="coin-icon">
+                            <span class="coin-name">ETH</span>
+                        </div>
+                        <div class="coin-price">$691.39</div>
+                        <div class="coin-change">+6.35%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Top Volume Card -->
+            <div class="market-card">
+                <div class="card-header">
+                    <h3 class="card-title">Top Volume Coin</h3>
+                    <a href="#" class="card-more">More &gt;</a>
+                </div>
+                <div class="card-body">
+                    <div class="coin-item">
+                        <div class="coin-info">
+                            <img src="/multimedia/image/bnb.png" alt="BNB" class="coin-icon">
+                            <span class="coin-name">BNB</span>
+                        </div>
+                        <div class="coin-price">$691.39</div>
+                        <div class="coin-change">+6.35%</div>
+                    </div>
+                    <div class="coin-item">
+                        <div class="coin-info">
+                            <img src="/multimedia/image/btc.png" alt="BTC" class="coin-icon">
+                            <span class="coin-name">BTC</span>
+                        </div>
+                        <div class="coin-price">$94.06</div>
+                        <div class="coin-change negative">-1.37%</div>
+                    </div>
+                    <div class="coin-item">
+                        <div class="coin-info">
+                            <img src="/multimedia/image/etherium.png" alt="ETH" class="coin-icon">
+                            <span class="coin-name">ETH</span>
+                        </div>
+                        <div class="coin-price">$691.39</div>
+                        <div class="coin-change">+6.35%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Market Table Section -->
+    <section class="container mt-5">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+            <div class="market-filters">
+                <button class="filter-btn active">All</button>
+                <button class="filter-btn">Solana</button>
+                <button class="filter-btn">RWA</button>
+                <button class="filter-btn">Meme</button>
+                <button class="filter-btn">Payment</button>
+                <button class="filter-btn">AI</button>
+                <button class="filter-btn">Layer 1 / Layer 2</button>
+                <button class="filter-btn">Metaverse</button>
+                <button class="filter-btn">Others</button>
+            </div>
+            
+            <div class="market-search">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="Search Coin Name">
+            </div>
+        </div>
+        
+        <div class="market-table-container">
+            <table class="market-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>24h Change</th>
+                        <th>24h Volume</th>
+                        <th>Market Cap</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Sample row - repeat for each coin -->
+                    <tr>
+                        <td>
+                            <div class="table-coin">
+                                <img src="/multimedia/image/btc.png" alt="BTC" class="table-coin-icon">
+                                <div>
+                                    <div class="table-coin-name">BTC</div>
+                                    <div class="table-coin-symbol">Bitcoin</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>$93,895.01</td>
+                        <td class="coin-change">0.95%</td>
+                        <td>38.44B</td>
+                        <td>1.871.57B</td>
+                        <td>
+                            <i class="fas fa-chart-line me-3"></i>
+                            <i class="fas fa-search-minus"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="table-coin">
+                                <img src="/multimedia/image/btc.png" alt="BTC" class="table-coin-icon">
+                                <div>
+                                    <div class="table-coin-name">BTC</div>
+                                    <div class="table-coin-symbol">Bitcoin</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>$93,895.01</td>
+                        <td class="coin-change">0.95%</td>
+                        <td>38.44B</td>
+                        <td>1.871.57B</td>
+                        <td>
+                            <i class="fas fa-chart-line me-3"></i>
+                            <i class="fas fa-search-minus"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="table-coin">
+                                <img src="/multimedia/image/btc.png" alt="BTC" class="table-coin-icon">
+                                <div>
+                                    <div class="table-coin-name">BTC</div>
+                                    <div class="table-coin-symbol">Bitcoin</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>$93,895.01</td>
+                        <td class="coin-change">0.95%</td>
+                        <td>38.44B</td>
+                        <td>1.871.57B</td>
+                        <td>
+                            <i class="fas fa-chart-line me-3"></i>
+                            <i class="fas fa-search-minus"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="table-coin">
+                                <img src="/multimedia/image/btc.png" alt="BTC" class="table-coin-icon">
+                                <div>
+                                    <div class="table-coin-name">BTC</div>
+                                    <div class="table-coin-symbol">Bitcoin</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>$93,895.01</td>
+                        <td class="coin-change">0.95%</td>
+                        <td>38.44B</td>
+                        <td>1.871.57B</td>
+                        <td>
+                            <i class="fas fa-chart-line me-3"></i>
+                            <i class="fas fa-search-minus"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="table-coin">
+                                <img src="/multimedia/image/btc.png" alt="BTC" class="table-coin-icon">
+                                <div>
+                                    <div class="table-coin-name">BTC</div>
+                                    <div class="table-coin-symbol">Bitcoin</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>$93,895.01</td>
+                        <td class="coin-change">0.95%</td>
+                        <td>38.44B</td>
+                        <td>1.871.57B</td>
+                        <td>
+                            <i class="fas fa-chart-line me-3"></i>
+                            <i class="fas fa-search-minus"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="table-coin">
+                                <img src="/multimedia/image/btc.png" alt="BTC" class="table-coin-icon">
+                                <div>
+                                    <div class="table-coin-name">BTC</div>
+                                    <div class="table-coin-symbol">Bitcoin</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>$93,895.01</td>
+                        <td class="coin-change">0.95%</td>
+                        <td>38.44B</td>
+                        <td>1.871.57B</td>
+                        <td>
+                            <i class="fas fa-chart-line me-3"></i>
+                            <i class="fas fa-search-minus"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="table-coin">
+                                <img src="/multimedia/image/btc.png" alt="BTC" class="table-coin-icon">
+                                <div>
+                                    <div class="table-coin-name">BTC</div>
+                                    <div class="table-coin-symbol">Bitcoin</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>$93,895.01</td>
+                        <td class="coin-change">0.95%</td>
+                        <td>38.44B</td>
+                        <td>1.871.57B</td>
+                        <td>
+                            <i class="fas fa-chart-line me-3"></i>
+                            <i class="fas fa-search-minus"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="table-coin">
+                                <img src="/multimedia/image/btc.png" alt="BTC" class="table-coin-icon">
+                                <div>
+                                    <div class="table-coin-name">BTC</div>
+                                    <div class="table-coin-symbol">Bitcoin</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>$93,895.01</td>
+                        <td class="coin-change">0.95%</td>
+                        <td>38.44B</td>
+                        <td>1.871.57B</td>
+                        <td>
+                            <i class="fas fa-chart-line me-3"></i>
+                            <i class="fas fa-search-minus"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="table-coin">
+                                <img src="/multimedia/image/btc.png" alt="BTC" class="table-coin-icon">
+                                <div>
+                                    <div class="table-coin-name">BTC</div>
+                                    <div class="table-coin-symbol">Bitcoin</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>$93,895.01</td>
+                        <td class="coin-change">0.95%</td>
+                        <td>38.44B</td>
+                        <td>1.871.57B</td>
+                        <td>
+                            <i class="fas fa-chart-line me-3"></i>
+                            <i class="fas fa-search-minus"></i>
+                        </td>
+                    </tr>
+                    <!-- Add more rows as needed -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="container-fluid">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>Community</h3>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="fab fa-discord"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-telegram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    </div>
+                    <div class="footer-links">
+                        <a href="#" class="footer-link"><i class="fas fa-globe me-2"></i> English</a>
+                        <a href="#" class="footer-link"><i class="fas fa-dollar-sign me-2"></i> USD-$</a>
+                        <a href="#" class="footer-link"><i class="fas fa-moon me-2"></i> Theme</a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>About Us</h3>
+                    <div class="footer-links">
+                        <a href="#" class="footer-link">About</a>
+                        <a href="#" class="footer-link">Careers</a>
+                        <a href="#" class="footer-link">Announcements</a>
+                        <a href="#" class="footer-link">News</a>
+                        <a href="#" class="footer-link">Legal</a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Product</h3>
+                    <div class="footer-links">
+                        <a href="#" class="footer-link">Exchange</a>
+                        <a href="#" class="footer-link">Buy Crypto</a>
+                        <a href="#" class="footer-link">Pay</a>
+                        <a href="#" class="footer-link">Academy</a>
+                        <a href="#" class="footer-link">NFT</a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <div class="footer-links">
+                        <a href="#" class="footer-link">24/7 Chat Support</a>
+                        <a href="#" class="footer-link">Support Center</a>
+                        <a href="#" class="footer-link">Fees</a>
+                        <a href="#" class="footer-link">APIs</a>
+                        <a href="#" class="footer-link">Trading Rules</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-4 pt-3 border-top border-secondary">
+                <p class="text-muted">Binance© 2024 <a href="#" class="text-muted ms-2">Cookie Preferences</a></p>
+            </div>
         </div>
     </footer>
-    <!-- <div class="support">
-        <i class="fa-solid fa-headset lg" style="color: #000000;"></i>
-        <a href="" class="support-content">Support</a>
-    </div> -->
-    
-</body>
-<script>
-    $(document).ready(function () {
-        $('.dropdown').hover(function () {
-            $(this).addClass('show');
-            $(this).find('.dropdown-menu').addClass('show');
-        }, function () {
-            $(this).removeClass('show');
-            $(this).find('.dropdown-menu').removeClass('show');
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Simple script to handle filter button active state
+        document.querySelectorAll('.filter-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
         });
-    });
-</script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        
+        // Mobile search toggle
+        const searchIcon = document.querySelector('.navbar .fa-search');
+        const mobileSearch = document.createElement('div');
+        mobileSearch.className = 'mobile-search d-lg-none w-100 mt-2';
+        mobileSearch.innerHTML = `
+            <div class="input-group">
+                <input type="text" class="form-control bg-dark text-white border-secondary" placeholder="Search...">
+                <button class="btn btn-outline-secondary" type="button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        `;
+        
+        searchIcon.addEventListener('click', function(e) {
+            e.preventDefault();
+            const navbar = document.querySelector('.navbar-collapse');
+            if (!document.querySelector('.mobile-search')) {
+                navbar.appendChild(mobileSearch);
+            } else {
+                const existingSearch = document.querySelector('.mobile-search');
+                if (existingSearch) {
+                    existingSearch.remove();
+                }
+            }
+        });
+    </script>
+</body>
 </html>
